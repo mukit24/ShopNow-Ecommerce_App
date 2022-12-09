@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Card, Button, ListGroup, Image } from 'react-bootstrap'
-import { useParams, Link } from 'react-router-dom'
+import { Row, Col, Card, Button, ListGroup, Image, Form } from 'react-bootstrap'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import Rating from '../components/Rating'
 import { useDispatch, useSelector } from 'react-redux'
 import { detailsProduct } from '../actions/productActions'
@@ -14,9 +14,18 @@ const ProductPage = () => {
     const productList = useSelector(state => state.productDetails)
     const { error, product, loading } = productList
 
+    const [qty, setQty] = useState(0)
+
     useEffect(() => {
         dispatch(detailsProduct(params.id))
-    }, [dispatch])
+    }, [dispatch, params])
+
+    const navigate = useNavigate();
+
+    const addCartHandler = () =>{
+        console.log('clicked')
+        navigate(`/cart/${params.id}?qty=${qty}`)
+    }
 
     return (
         <div>
@@ -68,8 +77,28 @@ const ProductPage = () => {
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
+                                        {product.countInStock && (
+                                            <ListGroup.Item>
+                                                <Row>
+                                                    <Col>Qty</Col>
+                                                    <Col>
+                                                        <Form.Select aria-label="Default select example"
+                                                        value={qty}
+                                                        onChange={e => setQty(e.target.value)}>
+                                                            {
+                                                                [...Array(product.countInStock).keys()].map(x => (
+                                                                    <option value={x+1} key={x+1}>{x+1}</option>
+                                                                ))
+                                                            }
+                                                        </Form.Select>
+                                                    </Col>
+                                                </Row>
+                                            </ListGroup.Item>
+                                        )}
                                         <ListGroup.Item>
-                                            <Button type='button'
+                                            <Button
+                                                onClick={addCartHandler}
+                                                type='button'
                                                 className='w-100 btn-dark'
                                                 disabled={product.countInStock === 0}>
                                                 Add to Cart

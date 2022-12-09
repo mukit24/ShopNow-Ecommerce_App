@@ -4,7 +4,7 @@ import Home from "./pages/HomePage";
 import ProductPage from "./pages/ProductPage";
 import { Container } from 'react-bootstrap';
 import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
-
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -15,6 +15,8 @@ function App() {
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path='/product/:id' element={<ProductPage />} />
+            <Route path="/cart" element={<CartPage />} />
+            <Route path="/cart/:id" element={<CartPage />} />
           </Routes>
         </Container>
       </main>
