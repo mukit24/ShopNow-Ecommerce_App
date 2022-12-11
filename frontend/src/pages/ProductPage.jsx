@@ -14,7 +14,7 @@ const ProductPage = () => {
     const productList = useSelector(state => state.productDetails)
     const { error, product, loading } = productList
 
-    const [qty, setQty] = useState(0)
+    const [qty, setQty] = useState(1)
 
     useEffect(() => {
         dispatch(detailsProduct(params.id))
