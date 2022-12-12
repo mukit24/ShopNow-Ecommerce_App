@@ -49,7 +49,7 @@ const LoginPage = () => {
                     Sign In
                 </Button>
             </Form>
-            <h6 className='py-3'>New Customer?  <Link to={ redirect ? `/register/redirect=${redirect}` : '/register'}>Register</Link></h6>
+            <h6 className='py-3'>New Customer?  <Link to={ redirect ? `/register?redirect=${redirect}` : '/register'}>Register</Link></h6>
         </FormContainer>
     )
 }
