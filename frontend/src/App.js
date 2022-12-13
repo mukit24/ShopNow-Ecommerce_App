@@ -8,6 +8,9 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import ProfilePage from "./pages/ProfilePage";
+import ShippingPage from "./pages/ShippingPage";
+import PaymentPage from "./pages/PaymentPage";
+import { PlaceOrderPage } from "./pages/PlaceOrderPage";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
             <Route path='/product/:id' element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/cart/:id" element={<CartPage />} />
+            <Route path="/shipping" element={<ShippingPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/placeorder" element={<PlaceOrderPage />} />
           </Routes>
         </Container>
       </main>

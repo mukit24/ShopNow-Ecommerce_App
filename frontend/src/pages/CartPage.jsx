@@ -51,7 +51,7 @@ const CartPage = () => {
                                     <Col md={3}>
                                         <Form.Select aria-label="Default select example"
                                             value={item.qty}
-                                            onChange={e => dispatch(addToCart(item.product_id,Number(e.target.value)))}>
+                                            onChange={e => dispatch(addToCart(item.product_id, Number(e.target.value)))}>
                                             {
                                                 [...Array(item.countInStock).keys()].map(x => (
                                                     <option value={x + 1} key={x + 1}>{x + 1}</option>
@@ -77,22 +77,24 @@ const CartPage = () => {
                 )}
             </Col>
             <Col md={4}>
-            <Card>
+                <Card>
                     <ListGroup variant='flush'>
                         <ListGroup.Item>
                             <h4>Subtotal ({cartItems.reduce((acc, item) => acc + item.qty, 0)}) items</h4>
                             ${cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)}
                         </ListGroup.Item>
 
-                    <ListGroup.Item>
-                        <Button
-                            type='button'
-                            className='w-100 btn-success'
-                            disabled={cartItems.length === 0}
-                        >
-                            Proceed To Checkout
-                        </Button>
-                    </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Link to={'/shipping'}>
+                                <Button
+                                    type='button'
+                                    className='w-100 btn-success'
+                                    disabled={cartItems.length === 0}
+                                >
+                                    Proceed To Checkout
+                                </Button>
+                            </Link>
+                        </ListGroup.Item>
                     </ListGroup>
                 </Card>
             </Col>

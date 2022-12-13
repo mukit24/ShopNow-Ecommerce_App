@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, redirect, useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { getUserDetails, updateUserProfile } from '../actions/userAction'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -12,7 +12,6 @@ const ProfilePage = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
-    const location = useLocation()
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -40,7 +39,7 @@ const ProfilePage = () => {
                 setEmail(user.email);
             }
         }
-    }, [dispatch, user])
+    }, [dispatch, user, navigate,success,userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault();
