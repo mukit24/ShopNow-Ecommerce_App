@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import getProducts, getProduct, getUser, getUsers, register_user,updateUser, addOrderItem
+from .views import getProducts, getProduct, getUser, getUsers, register_user,updateUser, addOrderItem, getOrderByID
 from .views import MyTokenObtainPairView
 
 app_name = 'base'
@@ -13,4 +13,5 @@ urlpatterns = [
     path('products/',getProducts,name='products'),
     path('products/<int:id>/',getProduct,name='product'),
     path('order/add/',addOrderItem,name='order-add'),
+    path('order/<int:id>/',getOrderByID,name='order-by-id'),
 ]

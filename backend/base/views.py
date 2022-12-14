@@ -86,13 +86,14 @@ def getProduct(request,id):
 def addOrderItem(request):
     user = request.user
     data = request.data
-
+    print('yo')
     orderItems = data['orderItems']
-    print(orderItems)
+    print(data)
     if len(orderItems) == 0:
         print('yo')
         return Response({'detail': 'No Order Items'}, status=status.HTTP_400_BAD_REQUEST)
     else:
+        print('yo1')
         order = Order.objects.create(
             user=user,
             paymentMethod=data['paymentMethod'],
@@ -100,7 +101,7 @@ def addOrderItem(request):
             shippingPrice=data['shippingPrice'],
             totalPrice=data['totalPrice']
         )
-
+        print('yo2')
         shipping = ShippingAddress.objects.create(
             order=order,
             address=data['shippingAddress']['address'],
@@ -108,7 +109,7 @@ def addOrderItem(request):
             postalCode=data['shippingAddress']['postalCode'],
             country=data['shippingAddress']['country'],
         )
-
+        print('yo3')
         for i in orderItems:
             product = Product.objects.get(id=i['product_id'])
 
@@ -123,6 +124,24 @@ def addOrderItem(request):
 
             product.countInStock -= item.qty
             product.save()
-
+        print('yo4')
         serializer = OrderSerializer(order, many=False)
         return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrderByID(request,id):
+    user = request.user
+
+    try:
+        order = Order.objects.get(id=id)
+        if user.is_staff or order.user == user:
+            serializer = OrderSerializer(order, many = False)
+            return Response(serializer.data)
+        else:
+            return Response({'detail': 'Not Authorized to view the content'}, status = status.HTTP_400_BAD_REQUEST)
+    except:
+        return Response({'detail': 'Order does not exits'}, status = status.HTTP_400_BAD_REQUEST)
+
+

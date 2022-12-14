@@ -15,6 +15,10 @@ export const addToCart = ( id, qty ) => async (dispatch,getState) =>{
         }
     })
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
+    
+    dispatch({
+        type: 'ORDER_CREATE_RESET',
+    })
 }
 
 export const removeFromCart =(id) => (dispatch, getState) =>{
