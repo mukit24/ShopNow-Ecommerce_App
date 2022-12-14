@@ -43,7 +43,7 @@ class Order(models.Model):
     createdAt = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return str(self.createdAt)
+        return f"Order: {self.id} User: {self.user}"
 
 
 class OrderItem(models.Model):
