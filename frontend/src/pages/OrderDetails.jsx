@@ -1,14 +1,13 @@
 import React, { useEffect } from 'react'
 import { Image, Button, Row, Col, ListGroup, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link, useParams } from 'react-router-dom'
-import { getOrderDetails } from '../actions/orderAction'
+import { Link, useParams } from 'react-router-dom'
+import { getOrderDetails, updateOrderToPay } from '../actions/orderAction'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 
 export const OrderPage = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const params = useParams()
 
     const orderID = Number(params.id);
@@ -16,15 +15,24 @@ export const OrderPage = () => {
     const orderDetails = useSelector(state => state.orderDetails)
     const { error, order, loading } = orderDetails
 
+    const orderPay = useSelector(state => state.orderPay)
+    const { successPay, loadingPay } = orderPay
+
     if(!loading && !error){
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0).toFixed(2)
     }
 
     useEffect(() => {
-        if (!order || orderID !== order.id) {
+        if (!order || orderID !== order.id || successPay) {
+            dispatch({type: 'ORDER_PAY_RESET'})
             dispatch(getOrderDetails(orderID))
         }
-    }, [order, dispatch, orderID])
+    }, [order, dispatch, orderID, successPay])
+
+    const handlePay = (e) => {
+        e.preventDefault();
+        dispatch(updateOrderToPay(orderID));
+    }
 
     return loading ? (
         <Loader />
@@ -120,6 +128,16 @@ export const OrderPage = () => {
                                     <Col>Total:</Col>
                                     <Col>৳{order.totalPrice}</Col>
                                 </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                {loadingPay && (
+                                    <Loader />
+                                )}
+                                {order.isPaid === false ? (
+                                    <Button onClick={handlePay} type='button' variant='success' className='w-100'><i className='far fa-money-bill-alt me-2'></i>Pay With {order.paymentMethod}</Button>
+                                ):(
+                                    <Message variant='success'>Order Is Paid</Message>
+                                )}
                             </ListGroup.Item>
                         </ListGroup>
                     </Card>

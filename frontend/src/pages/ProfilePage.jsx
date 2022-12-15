@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Table } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { LinkContainer } from 'react-router-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { getMyOrders } from '../actions/orderAction'
 import { getUserDetails, updateUserProfile } from '../actions/userAction'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
@@ -19,6 +21,9 @@ const ProfilePage = () => {
     const { loading, user, error } = userDetails
     // console.log(!user.name)
 
+    const myOrders = useSelector(state => state.myOrders)
+    const { orders } = myOrders
+
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
     // console.log(userInfo)
@@ -27,26 +32,30 @@ const ProfilePage = () => {
     const { success } = userUpdateProfile
 
     useEffect(() => {
-        if(!userInfo){
+        if (!userInfo) {
             navigate('/login')
-        }else{
+        } else {
             if (!user.name || success) {
                 dispatch({ type: 'USER_UPDATE_PROFILE_RESET' })
                 dispatch(getUserDetails())
+                dispatch(getMyOrders())
             } else {
                 setName(user.name);
                 setUsername(user.username);
                 setEmail(user.email);
             }
         }
-    }, [dispatch, user, navigate,success,userInfo])
+        if(!orders){
+            navigate('/')
+        }
+    }, [dispatch, user, navigate, success, userInfo, orders])
 
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(updateUserProfile({
             'id': user.id,
             'name': name,
-            'username':username,
+            'username': username,
             'email': email,
             'password': password
         }))
@@ -54,7 +63,7 @@ const ProfilePage = () => {
     return (
         <Row>
             <Col md={3}>
-                <h3>User Profile</h3>
+                <h3 className='mb-4'>User Profile</h3>
                 {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
                 <Form onSubmit={submitHandler}>
@@ -81,7 +90,36 @@ const ProfilePage = () => {
                 </Form>
             </Col>
             <Col md={9}>
-                My Orders
+                <h3 className='mb-4'>My Orders</h3>
+                <Table responsive striped variant='light'>
+                    <thead>
+                        <tr>
+                            <th>ORDER NO.</th>
+                            <th>DATE</th>
+                            <th>TOTAL</th>
+                            <th>PIAD</th>
+                            <th>DELIVERED</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {orders && orders.map((order,index) => (
+                            <tr key={order.id}>
+                                <td>{index+1}</td>
+                                <td>{order.createdAt.substring(0,10)}</td>
+                                <td>৳ {order.totalPrice}</td>
+                                <td>{order.isPaid ? order.paidAt.substring(0,10): <i className='fas fa-times text-danger'></i>}</td>
+                                <td>{order.isDelivered? order.deliveredAt.substring(0,10): <i className='fas fa-times text-danger'></i>}</td>
+                                <td>
+                                    <LinkContainer to={`/order/${order.id}`}>
+                                    <Button variant='success' className='btn-sm w-100'>Details</Button>
+                                    </LinkContainer>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+
+                </Table>
             </Col>
         </Row>
     )

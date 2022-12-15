@@ -38,6 +38,7 @@ export const userLogout = () => (dispatch) =>{
         type: 'USER_DETAILS_RESET'
     })
     dispatch({ type: 'USER_UPDATE_PROFILE_RESET' })
+    dispatch({ type: 'ORDER_MY_ORDERS_RESET'})
 }
 
 export const userRegistration = (name, username,email,password) => async (dispatch) => {

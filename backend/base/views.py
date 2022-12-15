@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
+from datetime import datetime
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
@@ -131,6 +132,17 @@ def addOrderItem(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
+def myOrders(request):
+    user = request.user
+    orders = user.order_set.all()
+
+    serializer = OrderSerializer(orders, many = True)
+
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def getOrderByID(request,id):
     user = request.user
 
@@ -143,5 +155,16 @@ def getOrderByID(request,id):
             return Response({'detail': 'Not Authorized to view the content'}, status = status.HTTP_400_BAD_REQUEST)
     except:
         return Response({'detail': 'Order does not exits'}, status = status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request,id):
+    order = Order.objects.get(id=id)
+
+    order.isPaid = True
+    order.paidAt = datetime.now()
+    order.save()
+
+    return Response('Order is paid')
 
 
