@@ -1,8 +1,7 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from .products import products
-from .models import Product, Order, OrderItem, ShippingAddress
+from .models import Product, Order, OrderItem, ShippingAddress, Review
 from .serializers import ProductSerializer,UserSerializer, UserSerializerWithToken, OrderSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -166,5 +165,34 @@ def updateOrderToPaid(request,id):
     order.save()
 
     return Response('Order is paid')
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def createProductReview(request, id):
+    user = request.user
+    data = request.data
+    product = Product.objects.get(id=id)
+
+    isExists = product.review_set.filter(user=user).exists()
+
+    if isExists:
+        return Response({'detail':'Already Reviewed'},status=status.HTTP_400_BAD_REQUEST)
+    else:
+        review = Review.objects.create(
+            product = product,
+            user = user,
+            name = user.first_name,
+            rating = data['rating'],
+            comment = data['comment']
+        )
+
+        product.numReviews += 1
+        print((product.rating+int(data['rating']))/2)
+        rating = (product.rating+int(data['rating']))/2
+        product.rating = rating
+        product.save()
+
+        return Response('Review Is Created')
+
+
 
 
