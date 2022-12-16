@@ -1,8 +1,10 @@
 import React from 'react'
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Image } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap'
 import { userLogout } from '../actions/userAction';
+import SearchBox from './SearchBox';
+import Icon from '../images/icon.ico'
 
 const Header = () => {
 
@@ -20,6 +22,13 @@ const Header = () => {
                 <Container>
                     <LinkContainer to={'/'}>
                         <Navbar.Brand>
+                            <img
+                                src={Icon}
+                                width="30"
+                                height="30"
+                                className="d-inline-block align-top me-2"
+                                alt="React Bootstrap logo"
+                            />
                             ShopNow</Navbar.Brand>
                     </LinkContainer>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -41,6 +50,7 @@ const Header = () => {
                                 </LinkContainer>
                             )}
                         </Nav>
+                        <SearchBox />
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

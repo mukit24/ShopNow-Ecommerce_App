@@ -5,18 +5,23 @@ import { useDispatch, useSelector } from 'react-redux'
 import { listProducts } from '../actions/productActions'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
+import { useLocation } from 'react-router-dom'
+import ShowCase from '../components/ShowCase'
 
 const Home = () => {
     const dispatch = useDispatch()
     const productList = useSelector(state => state.productList)
     const { error, loading, products } = productList
+    const location = useLocation()
+    const keyword = location.search
 
     useEffect(() => {
-        dispatch(listProducts())
-    }, [dispatch])
+        dispatch(listProducts(keyword))
+    }, [dispatch,keyword])
 
     return (
         <div>
+            {!keyword && <ShowCase />}
             <h1>Latest Products</h1>
             {loading ? <Loader />
                 : error ? <Message variant='danger'>{error}</Message>

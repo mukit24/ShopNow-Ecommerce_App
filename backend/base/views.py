@@ -71,7 +71,12 @@ def getUsers(request):
 
 @api_view(['GET'])
 def getProducts(request):
-    products = Product.objects.all()
+    keyword = request.query_params.get('keyword')
+    print(keyword)
+    if keyword == None:
+        keyword = ''
+
+    products = Product.objects.filter(name__icontains=keyword)
     serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
@@ -79,6 +84,12 @@ def getProducts(request):
 def getProduct(request,id):
     product = Product.objects.get(id=id)
     serializer = ProductSerializer(product, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def getTopProducts(request):
+    products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:2]
+    serializer = ProductSerializer(products, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
