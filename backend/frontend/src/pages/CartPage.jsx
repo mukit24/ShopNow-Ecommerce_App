@@ -61,7 +61,7 @@ const CartPage = () => {
 
                                     </Col>
 
-                                    <Col md={1}>
+                                    <Col md={2} className='pt-1 pt-sm-0'>
                                         <Button
                                             type='button'
                                             variant='danger'
