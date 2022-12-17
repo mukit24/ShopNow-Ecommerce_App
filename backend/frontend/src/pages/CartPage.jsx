@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useParams, Link } from 'react-router-dom'
+import { useLocation, useParams, Link, useNavigate } from 'react-router-dom'
 import { addToCart, removeFromCart } from '../actions/cartactions'
 import Message from '../components/Message'
 
@@ -9,6 +9,7 @@ const CartPage = () => {
     const location = useLocation()
     const params = useParams()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const productId = params.id
     const qty = location.search ? Number(location.search.split('=')[1]) : 1
@@ -21,6 +22,10 @@ const CartPage = () => {
 
     const cartItems = useSelector(state => state.cart.cartItems)
     console.log(cartItems)
+
+    const handleCheckout = () => {
+        navigate('/login?redirect=shipping')
+    }
 
     const removeFromCartHandler = (id) => {
         dispatch(removeFromCart(id))
@@ -85,15 +90,14 @@ const CartPage = () => {
                         </ListGroup.Item>
 
                         <ListGroup.Item>
-                            <Link to={'/shipping'}>
                                 <Button
                                     type='button'
+                                    onClick={handleCheckout}
                                     className='w-100 btn-success'
                                     disabled={cartItems.length === 0}
                                 >
                                     Proceed To Checkout
                                 </Button>
-                            </Link>
                         </ListGroup.Item>
                     </ListGroup>
                 </Card>

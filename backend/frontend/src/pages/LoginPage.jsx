@@ -16,12 +16,13 @@ const LoginPage = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const redirect = location.search ? location.search.split('=')[1] : '/'
+    console.log(redirect)
     const userLoginState = useSelector(state => state.userLogin)
     const {loading, userInfo, error} = userLoginState
 
     useEffect(()=>{
         if(userInfo){
-            navigate(redirect)
+            navigate(`/${redirect}`)
         }
     },[userInfo,navigate,redirect])
 
