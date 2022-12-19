@@ -39,12 +39,12 @@ const LoginPage = () => {
             <Form onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="username">
                     <Form.Label>Username</Form.Label>
-                    <Form.Control type="text" placeholder="Enter Username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <Form.Control required type="text" placeholder="Enter Username" value={username} onChange={(e) => setUsername(e.target.value)} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="password">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
+                    <Form.Control required type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </Form.Group>
                 <Button variant="success" type="submit">
                     Sign In
