@@ -1,0 +1,19 @@
+main{
+  min-height: 80vh;
+}
+
+.rating span{
+  margin:0.1rem;
+}
+
+
+
+.carousel img {
+  max-height: 70vh;
+  width: 100%;
+  object-fit: contain;
+}
+
+.product-card{
+  min-height: 100%;
+}
