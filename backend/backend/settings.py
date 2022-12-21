@@ -15,6 +15,8 @@ from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+MAIN_DIR = Path(__file__).resolve().parent.parent.parent
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -97,7 +99,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'frontend/build'],
+        'DIRS': [MAIN_DIR / 'frontend/build'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -163,7 +165,7 @@ MEDIA_URL = '/images/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'frontend/build/static',
+    MAIN_DIR / 'frontend/build/static',
 ]
 
 MEDIA_ROOT = BASE_DIR / 'static/images'
