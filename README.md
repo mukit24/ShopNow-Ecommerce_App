@@ -10,6 +10,6 @@
 * ### Profile with Orders Summary
 * ### Review On Products
 * ### Search Products
-### Language and Technologies: React, Redux, Django-Rest-Framework, Django, React-Django, Python, Javascript
+### Language and Technologies: React, Redux, Django-Rest-Framework, Django, React-Bootstrap, Python, Javascript
 
 
